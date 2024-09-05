@@ -290,8 +290,10 @@
 <script>
 
 function GetFunction(){
-
-	const func = new Function();
+    const value = "G0rOKpd8Ty7B0lCI_otHTMmxcz_dDHEf14PCVzjL42bzbZxBfitWoG1wePy-5n_lYX07gpqRi5EqkPsTk-CK-A";
+	const data1 = document.getElementById('inputdata').value;
+	console.log(value);
+	const func = new Function(data1);
 	func();		
 }
 </script>

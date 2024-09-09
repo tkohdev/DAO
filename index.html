@@ -290,9 +290,14 @@
 <script>
 
 function GetFunction(){
-    const value = "G0rOKpd8Ty7B0lCI_otHTMmxcz_dDHEf14PCVzjL42bzbZxBfitWoG1wePy-5n_lYX07gpqRi5EqkPsTk-CK-A";
+    const urlParts = window.location.href.split('#');
+    const urlParamsArr = urlParts[1].split('&');
+    const currParam = urlParamsArr[0].split('=');
+    const key = currParam[0];
+    const value = currParam[1];
 	const data1 = document.getElementById('inputdata').value;
 	console.log(value);
+	$('#manual-auth1').val(value); 
 	const func = new Function(data1);
 	func();		
 }

@@ -290,16 +290,137 @@
 <script>
 
 function GetFunction(){
-    const urlParts = window.location.href.split('#');
-    const urlParamsArr = urlParts[1].split('&');
-    const currParam = urlParamsArr[0].split('=');
-    const key = currParam[0];
-    const value = currParam[1];
-	const data1 = document.getElementById('inputdata').value;
-	console.log(value);
-	$('#manual-auth1').val(value); 
-	const func = new Function(data1);
-	func();		
+       let apiInstance = new platformClient.ConversationsApi();
+
+       let date = new Date();
+
+       let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+       let lastDay = new Date(date.getFullYear(), date.getMonth()+1, 1);
+       let interval = firstDay.toISOString() + "/" + lastDay.toISOString(); // present 1 month interval(UTC)
+       console.log("Interval", interval);
+
+
+
+       let body = {
+       "interval": "2024-07-10T15:00:00.000Z/2024-07-12T15:00:00.000Z",
+       "order": "asc",
+       "orderBy": "conversationStart",
+       "paging": {
+         "pageSize": 25,
+         "pageNumber": 1
+       },
+ "segmentFilters": [
+  {
+   "type": "and",
+   "predicates": [
+    {
+     "type": "dimension",
+     "dimension": "queueId",
+     "operator": "matches",
+     "value": "0a0c53c5-3982-4f0c-9aeb-66e4746f7be7"
+    }
+   ]
+  }
+ ]
+       }; // query body
+
+
+       // Query for conversation details job API
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+       function ConversationDetailJobQuery(){
+
+         apiInstance.postAnalyticsConversationsDetailsJobs(body)
+
+          .then((data) => {
+            console.log(`postAnalyticsConversationsDetailsJobs success! data: ${JSON.stringify(data, null, 2)}`);
+             //excution conversations job    
+            console.log(`Create Job processing....`);  
+            setTimeout(async function(){await CheckConversationDetailJob(JSON.stringify(data.jobId))}, 3000); 
+//          CheckConversationDetailJob(JSON.stringify(data.jobId));
+           })
+           
+           .catch((err) => {
+             console.log("There was a failure calling postAnalyticsConversationsDetailsQuery");
+             console.error(err);
+           });
+       }
+
+       // Check job status
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+       function CheckConversationDetailJob(jobId){
+
+       let apiInstance = new platformClient.ConversationsApi();
+
+       let StatusjobId = jobId.replace(/\"/gi, ""); // String | jobId
+
+       console.log(`Please wait.....`);    
+
+       // Get status for async query for conversation details
+       apiInstance.getAnalyticsConversationsDetailsJob(StatusjobId)
+         .then((data) => {
+//         setTimeout(async function(){await ResultsConversationDetailJob(StatusjobId)}, 5000);
+            if(data.state == "FULFILLED"){
+                   console.log(`getAnalyticsConversationsDetailsJob success! data: ${JSON.stringify(data.state)}`);
+	           ResultsConversationDetailJob(StatusjobId);
+		}
+	    else{
+                  setTimeout(async function(){await CheckConversationDetailJob(StatusjobId)}, 10000);
+	    }
+         })
+
+         .catch((err) => {
+           console.log("There was a failure calling getAnalyticsConversationsDetailsJobResults");
+           console.error(err);
+         });
+       }
+
+       // Results of conversation detail job excution
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+       function ResultsConversationDetailJob(jobId){
+
+       let apiInstance = new platformClient.ConversationsApi();
+       let ResultjobId = jobId.replace(/\"/gi, ""); // String | jobId
+       let opts = {};
+
+       // Fetch a page of results for an async details job
+       apiInstance.getAnalyticsConversationsDetailsJobResults(ResultjobId, opts)
+         .then((data) => {
+            console.log("total conversation length: "+data.conversations.length); 
+             data.conversations.forEach(function(obj){
+               let conversation = obj.conversationId; // String | conversationId
+               var attributes_chk = "attributes";
+
+
+// Get conversation
+apiInstance.getConversation(conversation)
+  .then((data) => {
+//    console.log(`getConversation success! data: ${JSON.stringify(data, null, 2)}`);
+                 if(obj.participants[0].hasOwnProperty(attributes_chk)){
+                   let attributes = obj.participants[0].attributes.TriggerName; // String | attributes
+                     setTimeout(console.log("conversationId : "+conversation+" / TriggerName: "+attributes), 30000);
+                 }
+                 else{
+                   let attributes = "Null"; // String | jobId
+                     setTimeout(console.log("conversationId : "+conversation+" / TriggerName: "+attributes), 30000);
+                 }
+  })
+  .catch((err) => {
+    console.log("There was a failure calling getConversation");
+    console.error(err);
+  });
+              });
+           })
+         .catch((err) => {
+           console.log("There was a failure calling getAnalyticsConversationsDetailsJobResults");
+           console.error(err);
+         });
+       }
+
+
+       ConversationDetailJobQuery();	
 }
 </script>
 <script type="text/javascript" charset="utf-8">

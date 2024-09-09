@@ -290,46 +290,6 @@
 <script>
 
 function GetFunction(){
-       let apiInstance = new platformClient.ConversationsApi();
-
-       let date = new Date();
-
-       let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-       let lastDay = new Date(date.getFullYear(), date.getMonth()+1, 1);
-       let interval = firstDay.toISOString() + "/" + lastDay.toISOString(); // present 1 month interval(UTC)
-       console.log("Interval", interval);
-
-
-
-       let body = {
-       "interval": "2024-07-10T15:00:00.000Z/2024-07-12T15:00:00.000Z",
-       "order": "asc",
-       "orderBy": "conversationStart",
-       "paging": {
-         "pageSize": 25,
-         "pageNumber": 1
-       },
- "segmentFilters": [
-  {
-   "type": "and",
-   "predicates": [
-    {
-     "type": "dimension",
-     "dimension": "queueId",
-     "operator": "matches",
-     "value": "0a0c53c5-3982-4f0c-9aeb-66e4746f7be7"
-    }
-   ]
-  }
- ]
-       }; // query body
-
-
-       // Query for conversation details job API
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-       function ConversationDetailJobQuery(){
-
 const platformClient = require("purecloud-platform-client-v2");
 
 const client = platformClient.ApiClient.instance;

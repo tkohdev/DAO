@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transcription Page</title>
+    <!-- link ref="stylesheet" href="/css/style.css" /-->
+    
+    <style type="text/css">
+        .trans_wrap {
+            /*            
+            width: 80%;
+            float: left;
+            */
+            height: 70%;
+            box-sizing: border-box;            
+            display: block;
+        } 
+
+        .trans_wrap .header {
+            font-size: 20px; 
+            font-weight: bold;
+            padding: 15px;
+            background: #33383D;
+            color: white;
+            text-align: center; 
+        }
+
+        .trans_wrap .chat {
+            height: 60vh;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .trans_wrap .chat ul {
+            width: 95%;
+            list-style: none;
+        }
+
+        .trans_wrap .chat ul li {
+            width: 95%;
+        }
+
+        .trans_wrap .chat ul li.left {
+            text-align: left;
+        }
+
+        .trans_wrap .chat ul li.right {
+            text-align: right;
+        }
+
+        .trans_wrap .chat ul li > div {
+            font-size: 13px;
+        }
+
+        .trans_wrap .chat ul li > div.sender {
+            margin: 10px 20px 0 20px;
+            font-weight: bold;
+        }
+
+        .trans_wrap .chat ul li > div.message {
+            display: inline-block;
+            word-break:break-all;
+            margin: 5px 20px;
+            max-width: 75%;
+            border: 1px solid #888;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #FCFCFC;
+            color: #555;
+            text-align: left;
+        }
+
+        .trans_wrap .line{
+            position: fiexd;
+            bottom: 0;
+            width: 100%;
+            background-color: #FFF;
+            text-align: center;
+            border-top: 1px solid #33383D;
+
+        }
+
+        .format {
+            display: none;
+        }
+
+        .assist_wrap {
+            /*
+            width: 80%;
+            float: left;
+            */
+            height: 100%;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        .assist_wrap .header {
+            font-size: 20px; 
+            padding: 15px;
+            font-weight: bold;
+            background: #33383D;
+            color: #FFF;
+            text-align: center; 
+        }
+
+        .assist_wrap .summary {
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        
+
+        .assist_wrap .summary ul {
+            width: 95%;
+            list-style: none;
+        }
+
+        .assist_wrap .summary ul div.right {
+            text-align: right;
+        }
+
+        .assist_wrap .summary ul div.right .btnCopy {
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .assist_wrap .summary ul li {
+            width: 100%;
+        }
+
+        .assist_wrap .summary ul li.left {
+            text-align: left;
+        }
+
+        .assist_wrap .summary ul li.right {
+            text-align: right;
+        }
+/*
+        .assist_wrap .summary ul li > div {
+            font-size: 13px;
+        }
+        
+        .assist_wrap .summary ul li > div.sender2 {
+            margin: 10px 20px 0 20px;
+            font-weight: bold;
+        }
+
+        .assist_wrap .summary ul li > div.result {
+            display: inline-block;
+            width: 80%;
+            height: 50vh;
+            word-break:break-all;
+            margin: 5px 20px;
+            border: 1px solid #888;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #aef6ea;
+            color: #555;
+            text-align: left;
+        }
+
+        .assist_wrap .summary ul li > div.result textarea {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+
+        }
+        */
+
+
+        .assist_wrap .summary ul li > div.resultTitle {
+            margin: 10px 20px 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    
+        .assist_wrap .summary ul li > div.resultMsg {
+            margin: 5px 20px;
+            border: 1px;
+        }
+
+        .assist_wrap .summary ul li > div.resultMsg textarea {
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-size: 13px;
+            width: 100%;
+            height: 120px;
+            resize: none;             
+
+        }       
+
+        .assist_wrap .line{
+            position: fiexd;
+            bottom: 0;
+            width: 100%;
+            background-color: #FFF;
+            text-align: center;
+            border-top: 1px solid #33383D;
+
+        }
+
+        .knowledge_wrap { 
+            /*           
+            width: 20%;
+            float: right;
+            border: 1px solid #888;
+            */            
+            box-sizing: border-box;
+            display: flex;            
+        }
+
+        .knowledge_wrap .header {
+            font-size: 20px; 
+            padding: 15px;
+            font-weight: bold;
+            background: #33383D;
+            color: #FFF;
+            text-align: center; 
+            flex: 1;
+        }
+
+        .knowledge_wrap .left-side {
+            flex: 3;
+            border: 1px solid #33383D;
+        }
+
+        .knowledge_wrap .left-side .result {
+            border: 1px;
+            font-size: 13px;
+        } 
+
+        .knowledge_wrap .right-side {
+            flex: 1;
+            border: 1px solid #33383D;
+        }
+
+        .knowledge_wrap .right-side .search {
+            border: 1px;
+        }
+
+        .knowledge_wrap .right-side .search .btnSearch {
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+
+        .knowledge_wrap .right-side .list {
+            border: 1px;
+            font-size: 13px;
+        }
+
+
+        .knowledge_wrap .line{
+            position: fiexd;
+            bottom: 0;
+            width: 100%;
+            background-color: #FFF;
+            text-align: center;
+            border-top: 1px solid #33383D;
+
+        }
+
+        .resultTitle {
+            font-weight: bold;
+            font-size: 13px;
+            color: #777070;
+        }
+
+        .searchTitle {
+            font-weight: bold;
+            font-size: 13px;
+            color: #777070;
+        }
+
+        .listTitle {
+            font-weight: bold;
+            font-size: 13px;
+            color: #777070;
+        }
+
+
+        
+    </style>
+
+    <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+         
+                 
+        // This client ID expects the redirect URL to be http://localhost:3000/
+        // genesyskorea1
+        //const clientId = "4e2554c0-7214-4dee-b07e-3430682ca6f9";
+        const hostUrl = "https://tkohdev.github.io/DAO/index1.html";
+
+        const clientId = "308fe866-0afe-4b08-ba1f-8b55a737679b";
+        const redirectUri = "https://tkohdev.github.io/DAO/index1.html";
+        const regionUri = "apne2.pure.cloud";
+        // Set Genesys Cloud objects
+        const platformClient = require("platformClient");
+        const client = platformClient.ApiClient.instance;
+        // Set Genesys Cloud settings
+        client.setEnvironment(regionUri);
+        client.setPersistSettings(true, "TranscriptionApps");
+        
+              
+        const notificationsApi = new platformClient.NotificationsApi();
+        const presenceApi = new platformClient.PresenceApi();
+        //const usersApi = new platformClient.UsersApi();
+        const tokensApi = new platformClient.TokensApi();
+        const conversationsApi = new platformClient.ConversationsApi();
+
+        // 2023.04.24
+        // recording api 사용을 위한 api 선언
+        const recordingApi = new platformClient.RecordingApi();
+        // statistic api 사용을 위한 api 선언
+        const analyticsApi = new platformClient.AnalyticsApi();
+        // queue 정보, queue에 속한 상담원 목록 등의 사용을 위한 api 선언
+        const routingApi = new platformClient.RoutingApi();
+        // role 관련 api 사용을 위한 api 선언
+        const authorizationApi = new platformClient.AuthorizationApi();
+        // user 검색 등을 위한 api 사용을 위한 api 선언.
+        const usersApi = new platformClient.UsersApi();
+        /**
+         * CX Innovate 2024 적용 예정 부분 시작 
+         * - knowledge 관련 api 사용을 위한 api 선언
+         * - SpeechTextAnalytics 관련 api 사용을 위한 api 선언
+         * */        
+        const knowledgeApi = new platformClient.KnowledgeApi();
+        const speechTextAnalyticsApi = new platformClient.SpeechTextAnalyticsApi();
+        /**
+         * CX Innovate 2024 적용 예정 부분 종료 
+         * */
+
+
+        /*
+        chatGPT 변수 선언 부분 시작
+        */
+        //const chatMessages = document.querySelector("#assist .summary");
+        const apiKey = 'sk-proj-VVjEN1WUZctuHq7slHYZT3BlbkFJbiDXlOvo7toBbZcdBEFk';
+        //console.log("apiKey2 : " + process.env.apiKey);
+        //const apiKey = apiKey;
+        const apiEndpoint = 'https://api.openai.com/v1/chat/completions'; 
+        let chatMsg = "";    
+          
+
+        /*
+        chatGPT 변수 선언 부분 종료
+        */
+
+
+        // interaction state var
+        let currentMuteState = "";
+        let currentHoldState = "";
+        let callId = "";
+        let customerParticipantId = "";
+        let originalCustomerParticipantId = ""
+        let myParticipantId = "";
+        let myUserId = "";
+        let currConversationId = "";
+
+        let currState = "";
+        let currDirection = "";
+        let currPurpose = "";
+        let transChannel = ""; // INTERNAL or EXTERNAL
+        let transconfidence = ""; // 신뢰도
+        let transDecoratedTranscript = ""; // 대화
+        let gcConversationId = "";
+        let communicationId = ""; // 감석분석을 위한 commid 
+
+        // 상담원 채널
+        const myChannel = "상담사";
+
+        /**
+         * CX Innovate 2024 적용 예정 부분 시작 
+         * - 지식 문서 json 
+         * */
+        let knowledgeDocumentData = {};
+        /**
+         * CX Innovate 2024 적용 예정 부분 종료 
+         * */
+
+        // conversationList var
+        let conversationList = {};
+        // 상담 내용 저장 변수
+        let conversationMsg = "";
+    
+
+        // notification var
+        let evaluationsTopic = "";
+        let queueObservationsTopic = "";
+        let presences = {};
+        let userPresenceTopic = "";
+        let conversationTopic = "";
+        let routingStatusTopic = "";
+        let userAggregatesTopic = "";        
+        let queueObservationsTopicDetails = "";
+        let tokenTopic = "";
+        let stationTopic = "";
+        let webSocket = null;
+        let me
+        let notificationChannel        
+
+        client._saveSettings({
+            accessToken: undefined,
+            state: undefined,
+            tokenExpiryTime: undefined,
+            tokenExpiryTimeString: undefined,
+        });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // 파라미터 먼저 수신 후 인증..
+            /*
+            let query = window.location.search;
+            let param = new URLSearchParams(query);
+            console.log(" query : " + query);
+            console.log(" param : " + param);
+            console.log(" true / false : " + param.has('gcConversationId'));
+            if(param.has('gcConversationId') == true){
+                gcConversationId = param.get('gcConversationId');
+                console.log(" 최초 페이지 로드 시 gcConversationId : " + gcConversationId);
+            };            
+            */
+
+            // 인증 및 로그인은 GC에 모달로 띄울꺼라 같은 페이지에서 처리...
+            // Authenticate with Genesys Cloud
+            client.loginImplicitGrant(clientId, redirectUri).then(() => {                
+                // 인증요청 후 토큰 받음.                
+                client._saveSettings(client.authData);
+                
+                console.log("##### Logged in... [Token]", client.authData);
+
+                /**
+                 * CX Innovate 2024 적용 예정 부분 시작 
+                 * - 지식 검색
+                 * */
+                document.getElementById("sendButton").addEventListener("click", knowledgesApi);
+                /**
+                 * CX Innovate 2024 적용 예정 부분 종료 
+                 * - 지식 검색
+                 * */
+                
+                setNotification();
+            }); 
+            
+            
+        });
+        
+        
+        function setNotification() {
+        // API
+            presenceApi
+            .getPresencedefinitions({ pageSize: 100 })
+            .then((presenceListing) => {
+                console.log(`Found ${presenceListing.entities.length} presences`);
+
+                // Create button for each presence
+                presenceListing.entities.forEach((presence) => {
+                presences[presence.id] = presence;
+                });
+
+                // Get authenticated user's data, including current presence
+                return usersApi.getUsersMe({ expand: ["presence","routingStatus"] });
+            })
+            .then((userMe) => {
+                me = userMe;
+                console.log("got me");
+                console.log(me);
+                console.log("done");
+                // Set current presence text in UI
+                myUserId = me.id;
+
+                
+                
+                // Create notification channel
+                return notificationsApi.postNotificationsChannels();
+            })
+            .then((channel) => {
+                console.log("channel: ", channel);
+                
+                notificationChannel = channel;
+                console.log("connectUri: ", notificationChannel.connectUri);
+
+                // Set up web socket
+                webSocket = new WebSocket(notificationChannel.connectUri);
+                webSocket.onopen = openSocket;
+                webSocket.onmessage = handleNotification;
+                webSocket.onerror = errorNotification;
+                webSocket.onclose = closeSocket;
+                
+                getActiveConversation();
+                
+                // 토픽 구독 (Subscribe)
+                //userPresenceTopic = `v2.users.${me.id}.presence`; // 상담원 상태 Event
+                conversationTopic = `v2.users.${me.id}.conversations`; // Call Event
+                //transcriptionTopic = `v2.conversations.${gcConversationId}.transcription`;
+                // add routingStatus 09.13.22
+                //routingStatusTopic = `v2.users.${me.id}.routingStatus`; // 상담원 routingStatus Event    
+                
+                const body = [{ id: conversationTopic }];
+                return notificationsApi.putNotificationsChannelSubscriptions(notificationChannel.id, body);
+            })
+            .then((channel) => {
+                console.log("Channel subscriptions set successfully");
+            })
+            .catch((err) => console.error(err));
+        }
+
+
+        // Handle incoming Genesys Cloud notification from WebSocket
+        function handleNotification(message) {
+            const notification = JSON.parse(message.data);
+            let now = new Date();
+            if (notification.topicName.toLowerCase() === "channel.metadata") {
+                // Heartbeat
+                
+                console.info(now + " ---- Ignoring metadata: ", notification);
+
+                //sendMessage("ttttttt");
+                                    
+                // 시간체크해서 일정 시간 후 오지 않으면 다시 setNotification
+
+                return;
+            
+            } else if (notification.topicName.toLowerCase() === conversationTopic.toLowerCase()) {
+            // Call Event topic
+                
+                console.log(now + "Conversation notification: ", notification);
+                me = notification;
+                //document.getElementById("myConversation").value = JSON.stringify(notification);
+                currConversationId = me.eventBody.id;
+                //participantsViewerSample(notification.eventBody.participants);                
+                //_logConversationDetails(me.eventBody);               
+                //copyCallPropsToParticipant(me.eventBody);
+                getConversationState(notification.eventBody.participants);
+                // Update conversation in list or remove it if disconnected
+                if (isConversationDisconnected(notification.eventBody))
+                    delete conversationList[notification.eventBody.id];
+                else
+                    conversationList[notification.eventBody.id] = notification.eventBody;
+                return;  
+                
+            } else if (notification.topicName.toLowerCase() === transcriptionTopic.toLowerCase()) {
+                // transcription Event topic
+                // add transcriptionTopic 
+                console.log(now + " ---- transcription notification: ", notification);
+                me = notification;
+                //document.getElementById("myTranscript").value = JSON.stringify(notification);
+                if(me.eventBody.status.status == "SESSION_ONGOING") {
+                    // result json 에서 transcripts key 가 있는 경우만 처리
+                    if(typeof me.eventBody.transcripts !== 'undefined'){
+                        // transcriptionData , communicationId
+                        //parsingTranscript(me.eventBody.transcripts[0]);  
+                        parsingTranscript(me.eventBody);    
+                    }
+                    
+                }else if(me.eventBody.status.status == "SESSION_ENDED"){
+                    // transcription session 이 종료되면 chatGPT로 요약 요청 추후 구현    
+                    getSummaryValue();
+                                     
+                }
+
+                return;
+            } else if (notification.topicName.toLowerCase() === evaluationsTopic.toLowerCase()) {
+                // evaluationsTopic Event topic
+                console.log(now + " ---- evaluationsTopic notification: ", notification);
+                me = notification;                
+
+                return;
+            
+            } else {
+                // Unexpected topic
+                console.log(now + "Unknown notification: ", notification);
+            }
+
+            // Set current presence text in UI
+            //document.querySelector("#currentPresence").innerText = presences[notification.eventBody.presenceDefinition.id].languageLabels.en_US;
+        }
+
+
+        // 참가자의 연결여부 확인
+        function isConversationDisconnected(conversation) {
+            let isConnected = false;
+            conversation.participants.some((participant) => {
+                if (participant.state !== 'disconnected') {
+                    isConnected = true;
+                    return true;
+                }
+            });
+
+            return !isConnected;
+        }   
+
+        
+        function openSocket(message){
+            console.log("socket open !!! ");
+            
+        }
+
+        function errorNotification(message){
+            
+            let now = new Date();
+            console.log("socket error !!! ");
+            setTimeout(() => 
+                reNotification(), 1000);
+        }
+
+        function closeSocket(message){
+            let now = new Date();
+            console.log(now + " : socket close !!! ");
+            setTimeout(() => 
+                reNotification(), 1000);
+            
+        }
+
+        function reNotification(){
+            let now = new Date();
+            console.log(now + " ---- reset nofitication ----");
+            console.log(now + " ---- webSocket 재 연결시 다시 notification 등록을 위해 호출 ----");
+            setNotification();
+        }
+
+        // conversation의 상태를 가져와서 transcription topic을 등록하는 함수
+        function getConversationState(participants) {
+            for(let i = 0; i < participants.length; i++){
+                
+                currPurpose = participants[i].purpose;
+                currDirection = participants[i].calls[0].direction;
+                currState = participants[i].calls[0].state;
+
+                if(currPurpose == "user" || currPurpose == "agent"){
+                    console.log(" ~~ User Participants ~~ ");
+                    if(currDirection == "outbound"){
+                        console.log(" ~~ direction = outbound ~~ ");
+                        if(currState == "contacting"){
+                            console.log(" ~~ state = contacting ~~ ");
+                            clearAllMessage();                      
+                            transcriptionApi();
+                        }
+                    }else if(currDirection == "inbound"){
+                        console.log(" ~~ direction = inbound ~~ ");
+                        if(currState == "alerting"){
+                            console.log(" ~~ state = alerting ~~ ");
+                            clearAllMessage();
+                            transcriptionApi();
+                        }
+                    }                   
+                }
+            };
+
+        }
+
+        // 각 participant 의 calls[0] 부분을 가져오는 함수(제거 예정)
+        function getParticipantCall(participant){
+            if(!participant){
+                return false;
+            }
+
+            if(participant.calls){
+                if(participant.calls.length){
+                    return participant.calls[0];
+                }
+            }
+            return false;
+        }
+
+
+        // 각 participant 의 정보를 로그로 남기기 위한 함수(제거 예정)
+        function _logConversationDetails(conversation){
+            console.log("---- 각각의 participant 정보 로그 출력 ----");
+            var _this1 = this;
+            if(conversation != null){
+                console.log("---- conversationId : ", conversation.id);
+                var logObject = {};
+                conversation.participants.forEach((party) => {
+                    var communication = _this1.getParticipantCall(party);
+                    if(communication){
+                        var id = party.id,
+                            userId = party.userId,
+                            name = party.name,
+                            address = party.address,
+                            purpose = party.purpose;
+                        var state = communication.state,
+                            confined = communication.confined,
+                            muted = communication.muted,
+                            held = communication.held;
+                        return logObject[id] = {
+                            userId: userId,
+                            name: name,
+                            address: address,
+                            state: state,
+                            confined: confined,
+                            muted: muted,
+                            held: held,
+                            purpose: purpose
+                        };
+                    }
+                });
+
+                if(console.table){
+                    return console.table(logObject);
+                }
+
+                return console.log(logObject);
+            }
+        }
+
+        // 제거 예정
+        function copyCallPropsToParticipant(conversation) {            
+            conversation.participants.forEach((participant) => {
+                if (!participant.calls || participant.calls.length === 0) return;
+                console.log("--- userId : ", participant.userId);
+                if(participant.purpose == "agent"){
+                    if(myUserId == participant.userId){
+                        participant.purpose = participant.purpose;                    
+                        participant.ani = participant.calls[0].self.addressNormalized;
+                        participant.attributes = participant.additionalProperties;
+                        participant.confined = participant.calls[0].confined;
+                        participant.direction = participant.calls[0].direction;
+                        participant.dnis = participant.calls[0].other.addressNormalized;
+                        participant.held = participant.calls[0].held;                    
+                        participant.muted = participant.calls[0].muted;                    
+                        participant.provider = participant.calls[0].provider;
+                        participant.recording = participant.calls[0].recording;
+                        participant.recordingState = participant.calls[0].recordingState;
+                        participant.state = participant.calls[0].state;
+                        if (participant.userId)
+                            participant.user = { id: participant.userId, selfUri: `/api/v2/users/${participant.userId}` };
+                            myParticipantId = participant.id;
+                            // transcription 을 위한 participant infomation
+                            //document.getElementById(`myParticipant`).value = participant.id;
+                        if (participant.calls[0].peerId)
+                            participant.peer = participant.calls[0].peerId;
+
+                        // hold, mute 을 위한 true / false 변수 세팅
+                        currentHoldState = participant.held;    
+                        currentMuteState = participant.muted;
+                        callId = participant.calls[0].id;                        
+                    }
+                    
+                }else if(participant.purpose == "customer"){
+                    // 고객 participantId 세팅
+                    customerParticipantId = participant.id;                     
+                    console.log("---- customerParticipantId : ", customerParticipantId);
+                }
+               
+                
+            });
+        }
+
+
+        // 상담원의 활성콜 조회
+        function getActiveConversation() {
+            // API
+            conversationsApi.getConversationsCalls().then((data) => {
+
+                if(data.total > 0) {
+                    console.log(" ~~ active call infomation :: " + JSON.stringify(data));
+                    gcConversationId = data.entities[0].id;
+                    console.log(" ~~ active call conversationId :: " + gcConversationId);
+                    transcriptionReg(gcConversationId);
+                }else{
+                    console.log(" ~~ active call infomation :: active call 이 없습니다. ");
+                }
+                
+            })
+            .catch((err) => {
+                console.log("There was a failure getAgentActiveConversation");
+                console.error(err);
+            });
+                        
+        }
+
+        
+        // page load 시 수행되는 transcription topic 등록
+        function transcriptionReg(gcConversationId){            
+            
+            console.log("---22 transcription start ---> conversationId : " + gcConversationId);
+            let conversationId = gcConversationId;
+
+            transcriptionTopic = `v2.conversations.${conversationId}.transcription`;
+
+            const body = [{ id: transcriptionTopic }];
+            let opt = {
+                'ignoreErrors': false
+            };
+
+            notificationsApi
+                .postNotificationsChannelSubscriptions(notificationChannel.id, body, opt)
+                .then((data) => {
+                    console.log(" 22 transcription notification success !!! ");
+                })
+                .catch((err) => {
+                    console.log(" 22 tanscription notification failed !!! ");
+                    console.log(err);
+                });
+
+        }   
+
+
+        function transcriptionApi(){            
+            
+            console.log("--- transcription start ---> conversationId : " + currConversationId);
+            let conversationId = currConversationId;
+
+            transcriptionTopic = `v2.conversations.${conversationId}.transcription`;
+
+            const body = [{ id: transcriptionTopic }];
+            let opt = {
+                'ignoreErrors': false
+            };
+
+            notificationsApi
+                .postNotificationsChannelSubscriptions(notificationChannel.id, body, opt)
+                .then((data) => {
+                    console.log("transcription notification success !!! ");
+                })
+                .catch((err) => {
+                    console.log("tanscription notification failed !!! ");
+                    console.log(err);
+                });
+
+        }   
+        
+        // me.eventBody.transcripts[0]
+        // eventBody.transcripts[0]
+        // communicationId
+        function parsingTranscript(eventBody){
+
+            transChannel = eventBody.transcripts[0].channel;
+            transConfidence = eventBody.transcripts[0].alternatives[0].confidence;
+            transDecoratedTranscript = eventBody.transcripts[0].alternatives[0].decoratedTranscript;
+            communicationId = eventBody.communicationId;    // 감성 분석 데이터 추출을 위한 commid 저장
+
+            // transChannel = transctipts.channel;
+            // transConfidence = transctipts.alternatives[0].confidence;
+            // transDecoratedTranscript = transctipts.alternatives[0].decoratedTranscript;
+
+            console.log("----------------------------------------------------");
+            console.log(" ~~ transChannel : " + transChannel);
+            console.log(" ~~ transConfidence : " + transConfidence);
+            console.log(" ~~ transDecoratedTranscript : " + transDecoratedTranscript);
+            console.log(" ~~ communicationId : " + communicationId);
+            console.log("----------------------------------------------------");
+            // send transcription message
+            sendMessage(transChannel, transDecoratedTranscript);
+        }
+
+        // message 생성
+        function createMessageTag(LR_className, senderName, message){
+            // 형식 가져오기
+            let chatLi = $('div.chat.format ul li').clone();
+
+            // 값 채우기
+            chatLi.addClass(LR_className);
+            chatLi.find('.sender span').text(senderName);
+            chatLi.find('.message span').text(message);
+
+            return chatLi;
+        }
+
+        // message 태그 append
+        function appendMessageTag(LR_className, senderName, message){
+            const chatLi = createMessageTag(LR_className, senderName, message);
+            console.log(" ~~ 메세지 표출 ~~ ");
+            $('div.chat:not(.format) ul').append(chatLi);
+
+            // 스크롤바 아래 고정
+            $('div.chat').scrollTop($('div.chat').prop('scrollHeight'));
+
+        }
+
+        function sendMessage(sender, message){
+
+            if(sender=="EXTERNAL"){
+                sender = "고객";
+            }else{
+                sender = "상담사";
+            }
+            
+            // transcription data 전송
+            const data = {
+                    "senderName" : sender,
+                    "message"    : message
+                };
+            
+            const LR = (data.senderName != myChannel)?"left": "right";
+            appendMessageTag(LR, data.senderName, data.message);
+            
+        }
+        
+
+        // 메세지 창 삭제
+        function clearAllMessage(){
+            $('div.chat:not(.format) ul').empty();
+            $('div.summary ul li > div.resultMsg textarea').empty();
+            //$('div.summary:not(.format) ul').empty();
+            console.log(" ~~ conversation 인입 시 기존 메세지 및 상담요약 전체 삭제 ~~ ");
+            // 삭제 후 다시 transcription 화면 표출
+            $(document).ready(function() {
+                $('.trans_wrap').show();
+                $('.assist_wrap').hide();
+                $('.knowledge_wrap').show();
+            });
+        }
+        
+
+        // chatGPT 결과용
+        // result 생성
+        function createResultTag(LR_className, senderName, message){
+            // 형식 가져오기
+            let summaryLi = $('div.summary.format ul li').clone();
+            console.log(" ~~ 결과 표출 222 ~~ ");
+            // 값 채우기
+            summaryLi.addClass(LR_className);
+            summaryLi.find('.sender2 span').text(senderName);
+            summaryLi.find('.result textarea').text(message);
+
+            return summaryLi;
+        }
+
+        // result 태그 append
+        function appendResultTag(LR_className, senderName, message){
+            const summaryLi = createResultTag(LR_className, senderName, message);
+            console.log(" ~~ 결과 표출 ~~ ");
+            $('div.summary:not(.format) ul').append(summaryLi);
+
+            // 스크롤바 아래 고정
+            //$('div.assist').scrollTop($('div.assist').prop('scrollHeight'));
+
+        }
+
+        function sendResult(sender, message){
+            
+            // chatGPT result data 전송
+            const data = {
+                    "senderName" : sender,
+                    "message"    : message
+                };
+
+            console.log(" 결과 :: " + message);
+
+            //let textarea = document.getElementById("summaryResultArea");
+            //textarea.value = message;
+
+            const LR = "left";
+            appendResultTag(LR, data.senderName, data.message);
+            
+        }
+       
+
+        // chatGPT api 요청
+        async function fetchAIResponse(prompt){
+            // API 요청에 사용할 옵션을 정의
+            const requestOptions = {
+                method: 'POST',
+                // API 요청의 헤더를 설정
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o",  // 사용할 AI 모델
+                    messages: [{
+                        role: "user", // 메시지 역할을 user로 설정
+                        content: prompt // 사용자가 입력한 메시지
+                    }, ],
+                    temperature: 1, // 모델의 출력 다양성
+                    max_tokens: 2048, // 응답받을 메시지 최대 토큰(단어) 수 설정
+                    top_p: 1, // 토큰 샘플링 확률을 설정
+                    frequency_penalty: 0.5, // 일반적으로 나오지 않는 단어를 억제하는 정도
+                    presence_penalty: 0.5, // 동일한 단어나 구문이 반복되는 것을 억제하는 정도
+                    stop: ["Human"], // 생성된 텍스트에서 종료 구문을 설정
+                }),
+            };
+            // API 요청후 응답 처리
+            try {
+                const response = await fetch(apiEndpoint, requestOptions);
+                const data = await response.json();
+                const datalog = JSON.stringify(data);
+                console.log(" ~~ receive chatGPT data :: " + datalog);
+                const aiResponse = JSON.parse(data.choices[0].message.content);
+
+                console.log(" 결과1 :: " + JSON.stringify(data, null, 2));
+                console.log(" 결과2 :: " + JSON.stringify(aiResponse, null, 2));
+                
+                return aiResponse;
+            } catch (error) {
+                console.error('OpenAI API 호출 중 오류 발생:', error);
+                return 'OpenAI API 호출 중 오류 발생';
+            }
+        }
+
+        // 대화내용 추출
+        async function getSummaryValue() {
+            let Msg = "";
+            let sendPrecondition = "";
+            $('div.chat').each(function(index, element) {                
+                
+                if(index==0){
+                    Msg = ($(this).text());
+                }                
+                
+            });            
+            
+            sendPrecondition += "[조건]."; 
+            sendPrecondition += "1)다음 고객과 상담원의 대화를 다음 3가지 기준인 '상담내용요약', '상담요청이유', '상담결과', '고객의 만족도' 로 분석하세요. ";
+            sendPrecondition += "2)'상담내용요약'은 고객과 상담원의 중요한 대화 내용을 요약해 주세요.";
+            sendPrecondition += "3)'상담요청이유'는 고객이 상담원에게 무엇을 물어보는지 요약해주세요.";
+            sendPrecondition += "4)'상담결과'는 상담요청이유에 대해 상담원이 어떻게 설명했고, 고객은 어떻게 이해했는지 요약해주세요.";
+            sendPrecondition += "5)'고객의 만족도'는 상담결과에 따는 고객이 만족 혹은 불만족한 정도과 이유를 요약하고, 만족도를 판단할 수 없으면 이유를 알려주세요.";
+            sendPrecondition += "6)분석결과는 'note', 'reason', 'outcome', 'satisfaction' 라는 키 이름으로 json Format으로 답을 주세요."; 
+            sendPrecondition += "7)json format은 {'note':'상담내용요약', 'reason':'상담요청이유', 'outcome':'상담결과', 'satisfaction':'고객의 만족도'} 입니다.";
+            sendPrecondition += "8)단, 결과는 ```json 태그나 ``` 혹은 '' 없이 순수 JSON 형태로 제공해 주세요.";
+            sendPrecondition += "[고객과 상담원의 대화내용].";    
+            
+            chatMsg = sendPrecondition + Msg;
+            conversationMsg = Msg;
+            
+            //ChatGPT API 요청후 답변을 화면에 추가
+            const aiResponse = await fetchAIResponse(chatMsg);
+
+            // chatGPT로 요청하기 전 transcription 화면을 숨기고, assist 화면으로 대체
+            $(document).ready(function() {
+                $('.trans_wrap').hide();
+                $('.assist_wrap').show();
+                $('.knowledge_wrap').hide();
+            });
+            //sendResult('상담요약', aiResponse);
+            // 4분할 시작
+            document.getElementById("resultMsg_01").value = aiResponse.note;
+            document.getElementById("resultMsg_02").value = aiResponse.reason;
+            document.getElementById("resultMsg_03").value = aiResponse.outcome;
+            document.getElementById("resultMsg_04").value = aiResponse.satisfaction;
+        }
+
+        // page load 시 transcription 화면만 표출.
+        $(document).ready(function() {
+            $('.trans_wrap').show();
+            $('.assist_wrap').hide();
+            $('.knowledge_wrap').show();
+        });
+
+
+        // 상담 내용 클립보드 복사
+        function conversationCopyToClipBoard(){
+
+            let content = "[고객과 상담원의 대화 내용.]" + "\n" 
+                        + conversationMsg
+                        
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    alert("고객과의 상담 내용이 클립보드에 복사 되었습니다.")
+                //console.log("Text copied to clipboard..." + content)
+            })
+                .catch(err => {
+                console.log('Something went wrong', err);
+            })
+        }
+
+
+            // 요약 내용 클립보드 복사
+        function resultCopyToClipBoard(){
+
+            var content1 = "1) Summary\n" + document.getElementById('resultMsg_01').value;
+            var content2 = "2) Reason for contact\n" + document.getElementById('resultMsg_02').value;
+            var content3 = "3) Outcome\n" + document.getElementById('resultMsg_03').value;
+            var content4 = "4) Satisfaction\n" + document.getElementById('resultMsg_04').value;
+
+            let content = content1 + "\n" 
+                        + content2 + "\n" 
+                        + content3 + "\n" 
+                        + content4;
+                        
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    alert("상담 요약 결과가 클립보드에 복사 되었습니다.")
+                //console.log("Text copied to clipboard..." + content)
+            })
+                .catch(err => {
+                console.log('Something went wrong', err);
+            })
+        }
+
+
+        /**
+         * CX Innovate 2024 적용 예정 부분 시작 
+         * - 지식 검색
+         * */
+
+         
+        // 지식 문서 검색
+        // knowledgeBaseId 는 기본으로 설정해야 함.( 여기서는 JK Demo 를 이용함. )
+        function knowledgesApi(){
+            
+            console.log("--- knowledgeApi call ");
+            let knowledgeBaseId = "38c6d4f9-8b3a-4768-8c6c-01bb95c7a704";
+            let queryString = document.getElementById(`userInput`).value;            
+            let opts = {
+                'body' : {
+                            pageSize: 25,
+                            pageNumber: 1,
+                            includeDraftDocuments: "true",
+                            filter: {
+                                clauses: [
+                                {
+                                    predicates: [
+                                    {
+                                        fields: [
+                                        "visible"
+                                        ],
+                                        values: [
+                                        "true",
+                                        "false"
+                                        ],
+                                        type: "MatchAny"
+                                    }
+                                    ],
+                                    operator: "And"
+                                }
+                                ],
+                                operator: "And"
+                            },
+                            query: queryString
+                        }
+            };
+
+            if(queryString.length == 0 || queryString.trim() == "" || queryString == null) {
+                alert("검색어를 입력하세요.");
+            }else{
+                knowledgeApi
+                    .postKnowledgeKnowledgebaseDocumentsSearch(knowledgeBaseId, opts)
+                    .then((data) => {
+                        console.log(` ---- knowledgesApi success! data: ${JSON.stringify(data, null, 2)}`);
+                        
+                        let results = data.results;
+                        console.log(results);
+                        
+                        knowledgeResults(results);
+
+                    })
+                    .catch((err) => {
+                        console.log('---- There was a failure calling knowledgesApi ');
+                        console.log(err);
+                    });
+            }
+
+        } 
+
+        // 지식 문서 검색 결과 list 생성 후 화면 표출
+        function knowledgeResults(results){
+            // list 만들기 전에 기존 결과 초기화
+            $('div.list ul').empty();
+
+            if(results.length > 0) {
+                results.forEach((result) => {
+                
+                    // knowledgeDocumentData json 데이터에 document 정보를 저장
+                    knowledgeDocumentData[result.document.title] = result.document.id;
+                    //console.log(" !!! : " + obj);
+                    console.log(` 지식문서 title/id json 형식으로 저장 : ${JSON.stringify(knowledgeDocumentData, null, 2)}` );
+                    $('div.list ul').append("<li onclick='fnSearchKnowledgeDocument(this);' style='cursor:pointer'>"+`${result.document.title}`+"</li>");                
+                });
+            }else{
+                $('div.list ul').append("<li>"+"검색 결과가 없습니다."+"</li>");
+            }
+            
+            
+        }
+
+
+        // 대화내용 클릭 이벤트 추출 후 검색 input 박스로 전달
+        // 추후 자동으로 지식 검색까지 되도록 구현?? 아직모르겟음.
+        function fnWordExtraction(e){            
+            //alert(e.innerText);
+            document.getElementById(`userInput`).value = e.innerText;
+            // 지식문서 검색
+            knowledgesApi();
+        };
+
+        // 지식 문서 클릭 시 히든값 추출
+        function fnSearchKnowledgeDocument(e){            
+            //alert(e.innerText + " - " + knowledgeDocumentData[`${e.innerText}`]);
+            fnSearchKnowledgeDocumentResult(knowledgeDocumentData[`${e.innerText}`]);
+        };
+        
+        // 지식 문서 id로 지식 문서 결과 추출
+        function fnSearchKnowledgeDocumentResult(docId) {
+            console.log("--- fnSearchKnowledgeDocumentResult call ");
+            let knowledgeBaseId = "38c6d4f9-8b3a-4768-8c6c-01bb95c7a704";
+            let documentId = docId;
+            let opts = {
+                'documentState': 'Published'
+            };
+
+            knowledgeApi
+                .getKnowledgeKnowledgebaseDocumentVariations(knowledgeBaseId,documentId,opts)
+                .then((data)=>{
+                    console.log(` ---- fnSearchKnowledgeDocumentResult success! data: ${JSON.stringify(data, null, 2)}`);
+                    //document.getElementById("knowledge_result").value = JSON.stringify(sample, null, 4);
+                    let resultDetail = data.entities[0].body.blocks;
+                    console.log(` ---- resultDetail blocks : ${JSON.stringify(resultDetail, null, 2)}`);
+                    
+                    fnDocumentResult(resultDetail);
+                })
+                .catch((err) => {
+                    console.log('---- There was a failure calling fnSearchKnowledgeDocumentResult ');
+                    console.log(err);
+                });
+
+        }
+
+        // 지식 문서 결과 json 파싱
+        function fnDocumentResult(results) {
+            console.log(` 문서 상세 검색 결과 : ${JSON.stringify(results, null, 2)}`);            
+
+            // 문서 결과를 초기화
+            $('div.resultDetail').empty();
+
+            // 검색 결과 문서가 존재한다면...
+            if(results.length > 0) {
+                // 문서 전체의 blocks 만큼 돌리는데..
+                results.forEach((result) => {
+
+                    let resultData = result.paragraph.blocks;       // 각 문장을 변수에 담고
+                    let indexOld = 0;                               // 배열이 여러개 인 경우에 대한 index 비교를 위한 변수 초기화.
+                    let resultTextOld = "";                         // 배열이 여러개 인 경우에 대한 text 변수 초기화
+
+                    // 각각의 라인에 blocks 가 배열로 존재 할 수 있으므로 그것에 대한 처리..
+                    resultData.forEach((result, index, arr) => {
+                        let resultText = JSON.stringify(result.text.text, null, 2);
+                        let resultHyperlink = "";
+
+                        // 모든 문장이 "" 안에 들어있으므로 "" 를 제거해주고
+                        resultText = resultText.replace(/"/g, "");
+
+                        // hyperlink 가 있는 케이스는 hyperlink 정보를 변수에 담아두고
+                        if(typeof result.text.hyperlink !== 'undefined') {
+                            resultHyperlink = JSON.stringify(result.text.hyperlink, null, 2);
+
+                        }
+
+                        // 띄어쓰기의 경우 1칸 공백으로 넘어오기 때문에, 공백 처리를 해주고
+                        if(resultText.length == 1) {
+                            resultText = "";
+                        }
+
+                        // blocks 가 여러개 있을 경우에 대한 처리
+                        // forEach 의 index 를 기준으로 판단하고, 배열 자체로도 한번 더 판단한다.
+                        if(indexOld == index) {
+                            // 배열이 1개인 경우
+                            if(arr.length == 1) {
+                                // hyperlink 가 있는 문구의 처리, 그렇지 않으면 text로 간주하고 text로 처리
+                                // 추후 이미지 등의 케이스가 생길 수 있으나 현재 테스트 상에는 text 와 hyperlink 로만 등록해야 함.
+                                if(resultHyperlink.length > 0) {
+                                    $('div.resultDetail').append("<p><a href="+resultHyperlink+" target='_blank' rel='noopener noreferrer'>"+resultText+"</a></p>");  
+                                }else{
+                                    $('div.resultDetail').append("<p>"+resultText+"</p>"); 
+                                }
+                                // 비교 판단을 위해서 현재 index를 변수에 저장                                
+                                indexOld += index;
+                            }else{
+                                // 배열이 1개 이상인 경우 하나의 라인에 표출해야 하기 때문에 이전 배열의 문구를 변수에 저장해둠.
+                                // hyperlink 에 대한 처리.. 다른 부분은 아직 모름.. 배열이 3개 이상이면 어쩌지...-_-;;
+                                indexOld += index;
+                                resultTextOld = resultText;
+                            }                          
+                        // 배열이 여러개 인 경우 처리.   
+                        }else{
+                            // hyperlink 가 존재하면 hyperlink 를 위한 tag 생성
+                            if(resultHyperlink.length > 0) {                                
+                                $('div.resultDetail').append("<p>"+resultTextOld+"<a href="+resultHyperlink+" target='_blank' rel='noopener noreferrer'>"+resultText+"</a></p>");  
+                            // 그렇지 않으면 그냥 텍스트 문구 tag 생성.
+                            }else{
+                                $('div.resultDetail').append("<p>"+resultText+"</p>"); 
+                            }
+                        }                      
+                        
+                        
+                    });
+                    
+                                  
+                });
+            }else{
+                $('div.resultDetail').append("<p> 문서 상세 검색 결과가 존재하지 않습니다. </p>"); 
+                console.log(" 문서 검색 결과가 존재하지 않습니다.");
+                    //$('div.list ul').append("<li>"+"검색 결과가 없습니다."+"</li>");
+            }
+            
+        }
+
+        /**
+         * CX Innovate 2024 적용 예정 부분 종료 
+         * - 지식 검색
+         * */
+       
+        
+
+    </script>
+  </head>
+  <body>
+    <div class="main-container">
+        <div class="trans_wrap">
+            <div class="header">
+                Transcription
+            </div>
+            <div class="chat">
+                <ul>
+                </ul>
+            </div>
+            <div class="line">
+            </div>
+            <div class="chat format">
+                <ul>
+                    <li>
+                        <div class="sender">
+                            <span> <!-- EXTERNAL / INTERNAL -->
+                            </span>
+                        </div>
+                        <div class="message">
+                            <span id="msg" onclick='fnWordExtraction(this);' style='cursor:pointer'> <!-- transcription message-->                        
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="assist_wrap">
+            <div class="header">
+                Agent Assist
+            </div>
+            <div class="summary">
+                <ul>
+                    <div class="right">
+                        <button class="btnCopy" onclick="conversationCopyToClipBoard()">상담 내용 복사</button>
+                        <button class="btnCopy" onclick="resultCopyToClipBoard()">요약 내용 복사</button>
+                    </div>
+                    <li>
+                        <div class="resultTitle">
+                            1) Summary 
+                        </div>
+                        <div class="resultMsg">
+                            <textarea id="resultMsg_01" readonly>                                
+                            </textarea>
+                        </div>
+                        <div class="resultTitle">
+                            2) Reason for contact
+                        </div>
+                        <div class="resultMsg">
+                            <textarea id="resultMsg_02" readonly>                                
+                            </textarea>
+                        </div>
+                        <div class="resultTitle">
+                            3) Outcome
+                        </div>
+                        <div class="resultMsg">
+                            <textarea id="resultMsg_03" readonly>                                
+                            </textarea>
+                        </div>
+                        <div class="resultTitle">
+                            4) Satisfaction
+                        </div>
+                        <div class="resultMsg">
+                            <textarea id="resultMsg_04" readonly>                                
+                            </textarea>
+                        </div>
+                    </li>                    
+                </ul>                  
+            </div> 
+            <div class="line">                
+            </div>                                                           
+        </div>
+        <div class="knowledge_wrap">
+            <div class="header">
+                KMS
+            </div>
+            <div class="left-side">
+                <div class="result"> 
+                    <span class="resultTitle">&nbsp;&para;&nbsp;문서 내용 </span>               
+                    <div class="resultDetail">                    
+                    </div>  
+                </div>    
+            </div>
+            <div class="right-side">
+                <div class="search">
+                    <span class="searchTitle">&nbsp;&para;&nbsp;검색어 :&nbsp;</span>
+                    <input id="userInput" type="text" placeholder="글 입력...." />
+                    <button id="sendButton" class="btnSearch">지식 검색</button>
+                </div>
+                <div class="list">
+                    <span class="listTitle">&nbsp;&#167;&nbsp;목록</span>
+                    <ul>                        
+                    </ul>
+                </div>                
+            </div>
+            <!--            
+            <div class="line">                
+            </div>
+            --> 
+        </div>               
+    </div>
+  </body>
+</html>

@@ -386,7 +386,7 @@
         function parsingTranscript(transctipts){
             transChannel = transctipts.channel;
             transConfidence = transctipts.alternatives[0].confidence;
-            transDecoratedTranscript = transctipts.alternatives[1].decoratedTranscript;
+            transDecoratedTranscript = transctipts.alternatives[0].decoratedTranscript;
 
             console.log("----------------------------------------------------");
             console.log(" ~~ transChannel : " + transChannel);
